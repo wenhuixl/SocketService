@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>设备信息</title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    .btn-list {
+      margin: 20px auto;
+    }
+    .red{color:red;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/devicelist">返回</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="well">设备状态</div>
+      <p class="btn-list">
+        <button type="button" class="btn btn-default" onclick="parkingDeviceById('<%-device_id%>')">刷新</button>
+      </p>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>设备名称</th>
+          <th>设备ip</th>
+          <th>设备端口</th>
+          <th>设备SN</th>
+          <th>安装时间</th>
+          <th>进出口</th>
+          <th>网关</th>
+          <th>同步时间</th>
+          <th>设备状态</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, key) in parkingDevice" v-cloak>
+          <th scope="row">{{key+1}}</th>
+          <td>{{item.parkingDevice.device_name}}</td>
+          <td>{{item.parkingDevice.device_ip}}</td>
+          <td>{{item.parkingDevice.device_port}}</td>
+          <td>{{item.parkingDevice.device_sn}}</td>
+          <td>{{item.parkingDevice.install_time}}</td>
+          <td>{{item.parkingDevice.channel_ids}}</td>
+          <td>{{item.parkingDevice.gateway_id}}</td>
+          <td>{{item.parkingDevice.sync_time}}</td>
+          <td>
+            <span v-if="item.online==1"><button type="button" class="btn btn-success btn-xs">在线</button></span>
+            <span v-if="item.online==0"><button type="button" class="btn btn-danger btn-xs">离线</button></span>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary btn-xs" v-on:click="openGate(item)">开闸</button>
+            <button type="button" class="btn btn-info btn-xs" v-on:click="recogByManual(item)">手动识别</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="well">脱机参数</div>
+      <p class="btn-list">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editOfflineParam" onclick="editOfflineParam()">编辑</button>
+        <button type="button" class="btn btn-default" onclick="refreshOfflineParam()">刷新</button>
+      </p>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>主服务器IP地址</th>
+          <th>主服务器端口</th>
+          <th>车场编号</th>
+          <th>出入场记录是否覆盖</th>
+          <th>车场出入口标识</th>
+          <th>固定车预警天数</th>
+          <th>固定车匹配精度</th>
+          <th>记录匹配精度</th>
+          <th>启用固定车转临时车</th>
+          <th>固定车开闸方式</th>
+          <th>临时车开闸方式</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-cloak>
+          <th scope="row">1</th>
+          <td>{{getOfflineParam.serverIP}}</td>
+          <td>{{getOfflineParam.serverPort}}</td>
+          <td>{{getOfflineParam.parkID}}</td>
+          <td>{{getOfflineParam.isRecordCover}}</td>
+          <td>
+            <span class="red" v-if="getOfflineParam.parkInOutFlag==0">车场入口</span>
+            <span class="red" v-if="getOfflineParam.parkInOutFlag==1">车场出口</span>
+            {{getOfflineParam.parkInOutFlag}}
+          </td>
+          <td>{{getOfflineParam.monthcarAlarmDays}}</td>
+          <td>{{getOfflineParam.recognitionAccuracy}}</td>
+          <td>{{getOfflineParam.recordMatchAccuracy}}</td>
+          <td>{{getOfflineParam.monthCarToTempcarFlag}}</td>
+          <td>
+            <span class="red" v-if="getOfflineParam.monthCarOpenType==0">确认放行</span>
+            <span class="red" v-if="getOfflineParam.monthCarOpenType==1">直接放行</span>
+            <span class="red" v-if="getOfflineParam.monthCarOpenType==2">未知</span>
+            {{getOfflineParam.monthCarOpenType}}
+          </td>
+          <td>
+            <span class="red" v-if="getOfflineParam.tempCarOpenType==0">确认放行</span>
+            <span class="red" v-if="getOfflineParam.tempCarOpenType==1">直接放行</span>
+            <span class="red" v-if="getOfflineParam.tempCarOpenType==2">未知</span>
+            {{getOfflineParam.tempCarOpenType}}
+          </td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>最低收费</th>
+          <th>临时车禁止出入场</th>
+          <th>时间点</th>
+          <th>是否在线</th>
+          <th>是否启用单通道模式</th>
+          <th>单通道重复车牌等待时间</th>
+          <th>正常模式重复车牌等待时间</th>
+          <th>是否启用最低收费</th>
+          <th>脱机显示屏显示内容的刷新间隔</th>
+          <th>脱机显示屏默认显示的企业标识</th>
+          <th>显示屏类型</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-cloak>
+          <th scope="row">1</th>
+          <td>{{getOfflineParam.minCharge}}</td>
+          <td>{{getOfflineParam.tempCarForbiddenFlag}}</td>
+          <td>{{getOfflineParam.syncTimeFromMaster}}</td>
+          <td>{{getOfflineParam.onlineFlag}}</td>
+          <td>
+            <span class="red" v-if="getOfflineParam.oneChannelMode==0">否</span>
+            <span class="red" v-if="getOfflineParam.oneChannelMode==1">是</span>
+          </td>
+          <td>{{getOfflineParam.oneChannelWaitTime}}</td>
+          <td>{{getOfflineParam.normalModeWaitTime}}</td>
+          <td>{{getOfflineParam.minChargeFlag}}</td>
+          <td>{{getOfflineParam.displayRefreshInterval}}</td>
+          <td>{{getOfflineParam.propertyLogo}}</td>
+          <td>{{getOfflineParam.screenType}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="well">实时监控</div>
+      <table id="table" class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>时间</th>
+          <th>识别耗时</th>
+          <th>车辆数</th>
+          <th>车牌号</th>
+          <th>可信度</th>
+          <th>车牌颜色</th>
+          <th>是否双层车牌</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, key) in licensePlate" v-on:click="showItem(item)" v-cloak>
+          <th scope="row">{{key+1}}</th>
+          <td>{{item.szTime}}</td>
+          <td>{{item.nProcessTime}}</td>
+          <td>{{item.nPlateNum}} 辆</td>
+          <td>{{item.szLicense}}</td>
+          <td>{{item.fConfidence}}</td>
+          <td>
+            <span v-if="item.plateColor==0">黑色</span>
+            <span v-if="item.plateColor==20">绿色</span>
+            <span v-if="item.plateColor==30">蓝色</span>
+            <span v-if="item.plateColor==50">黄色</span>
+            <span v-if="item.plateColor==255">白色</span>
+          </td>
+          <td>{{item.bDoublePlates}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <img :src="base64Img" data-src="holder.js/140x140" class="img-thumbnail" alt="140x140" data-holder-rendered="true" style="width: 100%; height: 450px;" onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjNlMjcxNTU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2M2UyNzE1NTlhIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0IiB5PSI3NC44Ij4xNDB4MTQwPC90ZXh0PjwvZz48L2c+PC9zdmc+'">
+      <div class="well">收费规则</div>
+
+      <div class="well">名单列表</div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="btn-list">
+              <button type="button" class="btn btn-default" onclick="listBanner(0)">白名单</button>
+              <button type="button" class="btn btn-primary" onclick="listBanner(1)">黑名单</button>
+              <button type="button" class="btn btn-warning" onclick="listBanner(2)">固定车</button>
+              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addDeviceBanner">
+                添加名单
+              </button>
+              <button type="button" class="btn btn-default" onclick="clearPlateList(0)">清除白名单</button>
+              <button type="button" class="btn btn-default" onclick="clearPlateList(1)">清除黑名单</button>
+              <button type="button" class="btn btn-default" onclick="clearPlateList(2)">清除固定车名单</button>
+            </p>
+            <table id="table2" class="table table-hover">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>名单类型</th>
+                <th>车牌名称</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, key) in listBanner" v-cloak>
+                <th scope="row">{{key+1}}</th>
+                <td>
+                  <span v-if="item.szType==0">白名单</span>
+                  <span v-if="item.szType==1">黑名单</span>
+                  <span v-if="item.szType==2">固定车</span>
+                </td>
+                <td>{{item.szLicense}}</td>
+                <td>{{item.szBeginTime}}</td>
+                <td>{{item.szEndTime}}</td>
+                <td>
+                  <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editDeviceBanner" v-on:click="selectDevice(item)">
+                    编辑
+                  </button>
+                  <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delDeviceBanner" v-on:click="selectDevice(item)">
+                    删除
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+
+  <!-- 添加模态框 -->
+  <div class="modal fade" id="addDeviceBanner" tabindex="-1" role="dialog" aria-labelledby="addDeviceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="addDeviceLabel">添加黑白名单</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="plateName">车牌名称</label>
+            <input type="text" class="form-control" id="plateName" placeholder="粤TA5467">
+          </div>
+          <div class="form-group">
+            <label for="plateType">类型</label>
+            <input type="text" class="form-control" id="plateType" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label for="startTime">开始日期</label>
+            <input type="text" class="form-control" id="startTime" placeholder="2017-06-07">
+          </div>
+          <div class="form-group">
+            <label for="text">截止日期</label>
+            <input type="text" class="form-control" id="endTime" placeholder="2018-06-07">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="addPlateList()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 编辑模态框 -->
+  <div class="modal fade" id="editDeviceBanner" tabindex="-1" role="dialog" aria-labelledby="editDeviceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="editDeviceLabel">编辑黑白名单</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="plateName">车牌名称</label>
+            <input type="text" class="form-control" id="newPlateName" v-model="slDevice.szLicense">
+          </div>
+          <div class="form-group">
+            <label for="plateType">类型</label>
+            <input type="text" class="form-control" id="newPlateType" v-model="slDevice.szType">
+          </div>
+          <div class="form-group">
+            <label for="startTime">开始日期</label>
+            <input type="text" class="form-control" id="newStartTime" v-model="slDevice.szBeginTime">
+          </div>
+          <div class="form-group">
+            <label for="text">截止日期</label>
+            <input type="text" class="form-control" id="newEndTime" v-model="slDevice.szEndTime">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="editPlateList()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑脱机参数 -->
+  <div class="modal fade" id="editOfflineParam" tabindex="-1" role="dialog" aria-labelledby="editOfflineParamLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="editOfflineParamLabel">编辑脱机参数</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="offlineParam">脱机参数</label>
+            <input type="text" class="form-control" id="offlineParam">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="saveOfflineParam()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑模态框 -->
+  <div class="modal fade" id="delDeviceBanner" tabindex="-1" role="dialog" aria-labelledby="delDeviceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="delDeviceLabel">编辑黑白名单</h4>
+        </div>
+        <div class="modal-body">
+          删除一条记录？
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="delPlateList()">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑模态框 -->
+  <div class="modal fade" id="clearPlate" tabindex="-1" role="dialog" aria-labelledby="clearPlateLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="clearPlateLabel">提示消息</h4>
+        </div>
+        <div class="modal-body">
+          操作成功
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+</html>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.js"></script>
+<script src="/javascripts/socket.io.js"></script>
+<script src="/vue/2.3.4/vue.js"></script>
+<script type="text/javascript">
+  // var domain = window.location.host; // 获取服务主机路径
+  var domain = '<%-domain%>';
+  console.log(domain);
+  var socket = io.connect(domain);
+  var device_id = '<%-device_id%>';
+  var vm = new Vue({
+      el: '#app',
+      data: {
+          parkingDevice: [],
+          licensePlate: [],
+          listBanner:[],
+          base64Img: '',
+          slDevice: {},
+          getOfflineParam: {}
+      },
+      methods: {
+          selectDevice: function (item) {
+              console.log('selectDevice: ',item);
+              vm.slDevice = item;
+          },
+          openGate: function (item) {
+              console.log('openGate: ',item.parkingDevice);
+              socket.emit("openGate", {parkingDevice: item.parkingDevice});
+          },
+          recogByManual: function (item) { // 手动识别
+              console.log('recogByManual: ', item.parkingDevice);
+              socket.emit("recogByManual", {parkingDevice: item.parkingDevice});
+          }
+      },
+      filters:{
+          courseTime:function (startTime, endTime) {
+          }
+      },
+      watch: {
+          parkingDevice: function () {
+              socket.emit("listBanner", {type: 0, parkingDevice: vm.parkingDevice[0].parkingDevice}); // 获取白名单
+              socket.emit('getOfflineParam', {parkingDevice: vm.parkingDevice[0].parkingDevice}); // 获取脱机参数
+          }
+      }
+  });
+
+  $(document).ready(function(){
+      parkingDeviceById(device_id); // 获取设备列表
+  });
+
+  function parkingDeviceById(device_id) {
+      console.log('获取设备');
+      $.get('/plate/parkingDeviceById',{device_id: device_id}, function (data) {
+          console.log(data);
+          if(data) {
+              vm.parkingDevice = data.list;
+          }
+      })
+  };
+
+  function getPlateList() {
+      $.get('/plate/getPlateList', function (data) {
+          console.log(data);
+      })
+  };
+
+  function listBanner(type) { // 获取名单
+       socket.emit("listBanner", {type: type, parkingDevice: vm.parkingDevice[0].parkingDevice});
+  };
+
+  function addPlateList() { // 设置黑白名单
+      var plateName = $('#plateName').val();
+      var plateType = $('#plateType').val();
+      var startTime = $('#startTime').val();
+      var endTime = $('#endTime').val();
+      console.log('addPlateList: ',plateName, plateType, startTime, endTime);
+      socket.emit("addPlateList", {plateName: plateName, plateType: plateType, startTime: startTime, endTime: endTime});
+      $('#addDeviceBanner').modal('hide');
+      listBanner(0); // 刷新白名单
+  };
+
+  function editPlateList() { // 编辑黑白名单
+      var newPlateName = $('#newPlateName').val();
+      var newPlateType = $('#newPlateType').val();
+      var newStartTime = $('#newStartTime').val();
+      var newEndTime = $('#newEndTime').val();
+      console.log('editPlateList: ',newPlateName, newPlateType, newStartTime, newEndTime);
+      socket.emit("setPlateList", {plateName: newPlateName, plateType: newPlateType, startTime: newStartTime, endTime: newEndTime});
+      $('#editDeviceBanner').modal('hide');
+      listBanner(0); // 刷新白名单
+  };
+
+  function delPlateList() { // 删除黑白名单 delPlateList
+      console.log('delPlateList: ', vm.slDevice);
+      var slDevice = vm.slDevice;
+      socket.emit("delPlateList", {plateName: slDevice.szLicense, plateType: slDevice.szType, startTime: slDevice.szBeginTime, endTime: slDevice.szEndTime});
+      $('#delDeviceBanner').modal('hide');
+      listBanner(0); // 刷新白名单
+  };
+
+  function clearPlateList(listType) { // 清除名单
+      var device = vm.parkingDevice[0];
+      $.post('/plate/clearPlateList', {device: device_back, listType: listType}, function (data) {
+          console.log('清除名单', data);
+          $('#clearPlate').modal('show');
+      });
+  };
+
+  function editOfflineParam() {
+      $('#offlineParam').val(JSON.stringify(vm.getOfflineParam));
+      console.log(JSON.stringify(vm.getOfflineParam));
+  };
+
+  function saveOfflineParam() {
+      var device = vm.parkingDevice[0];
+      var offlineParam = JSON.parse($('#offlineParam').val());
+      console.log(JSON.stringify(device_back), device_back.parkingDevice.device_ip, device_back.parkingDevice.device_port);
+      console.log(offlineParam);
+      $.post('/plate/setOfflineParam', {device: device_back, offlineParam: offlineParam}, function (data) {
+          console.log(data);
+          $('#editOfflineParam').modal('hide');
+          socket.emit('getOfflineParam', {parkingDevice: vm.parkingDevice[0].parkingDevice}); // 获取脱机参数
+      });
+  };
+
+  function refreshOfflineParam() {
+      var device = vm.parkingDevice[0];
+      $.post('/plate/refreshOfflineParam', {device: device_back}, function (data) {
+          console.log('刷新', data);
+      });
+  };
+
+  // 收到消息
+  socket.on('licensePlate', function (data) {
+      console.log('licensePlate: ', data);
+      if(data != null) {
+          vm.licensePlate.push(data.result);
+      }
+  });
+  socket.on('licensePhoto', function (data) {
+      console.log('licensePhoto: ', data);
+      if(data != null) {
+         vm.base64Img = 'data:image/jpeg;base64,'+data.result.base64Image;
+      }
+  });
+  socket.on('openGateRes', function (data) {
+      console.log('openGateRes: ', data);
+  });
+  socket.on('listBanner', function (data) {
+      console.log('listBanner: ', data);
+      if(data != null) {
+          vm.listBanner = data.result;
+      }
+  });
+  socket.on('recogByManualRes', function (data) {
+      console.log('recogByManualRes: ', data);
+  });
+  socket.on('getOfflineParamRes', function (data) {
+      console.log('getOfflineParamRes: ', data);
+      vm.getOfflineParam = data.result;
+  });
+</script>

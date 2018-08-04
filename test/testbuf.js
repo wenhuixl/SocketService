@@ -1,0 +1,13 @@
+/**
+ * Created by wenhui on 2018/6/19.
+ */
+
+// var buf = Buffer.from('00000000000000000000000000000000', 'hex');
+//
+// console.log(buf.toString());
+
+var buf = Buffer.from('b9040000749f8ad374000000000b030000000000564950bfcdbba70000000000000000000000000000000000bbb6d3adb9e2c1d900000000000000000000000000000000c1d9cab1b3b5c5c600000000000000000000000000000000bbb6d3adb9e2c1d900000000000000000000000000000000', 'hex');
+
+console.log(buf.toString('utf8'))
+var ServerPort = buf.readIntLE(28,4);
+var ParkID = buf.readIntLE(32,4);

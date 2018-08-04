@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>停车场</title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <link href="/stylesheets/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+  <style>
+    body {
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    #jp_container_1{
+      margin: 20px auto;
+    }
+    .btn-list {
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Brand</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <div class="row">
+    <div class="col-md-5">
+      <div id="jp_container_1" class="jp-video jp-video-360p" role="application" aria-label="media player">
+        <div class="jp-type-single">
+          <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+          <div class="jp-gui">
+            <div class="jp-video-play">
+              <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
+            </div>
+            <div class="jp-interface">
+              <div class="jp-progress">
+                <div class="jp-seek-bar">
+                  <div class="jp-play-bar"></div>
+                </div>
+              </div>
+              <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+              <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+              <div class="jp-controls-holder">
+                <div class="jp-controls">
+                  <button class="jp-play" role="button" tabindex="0">play</button>
+                  <button class="jp-stop" role="button" tabindex="0">stop</button>
+                </div>
+                <div class="jp-volume-controls">
+                  <button class="jp-mute" role="button" tabindex="0">mute</button>
+                  <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                  <div class="jp-volume-bar">
+                    <div class="jp-volume-bar-value"></div>
+                  </div>
+                </div>
+                <div class="jp-toggles">
+                  <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                  <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
+                </div>
+              </div>
+              <div class="jp-details">
+                <div class="jp-title" aria-label="title">&nbsp;</div>
+              </div>
+            </div>
+          </div>
+          <div class="jp-no-solution">
+            <span>Update Required</span>
+            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+          </div>
+        </div>
+      </div>
+      <div class="well">出入口记录</div>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>时间</th>
+          <th>识别耗时</th>
+          <th>车辆数</th>
+          <th>车牌号</th>
+          <th>可信度</th>
+          <th>车牌颜色</th>
+          <th>是否双层车牌</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, key) in licensePlate" v-on:click="showItem(item)" v-cloak>
+          <th scope="row">{{key+1}}</th>
+          <td>{{item.szTime}}</td>
+          <td>{{item.nProcessTime}}</td>
+          <td>{{item.nPlateNum}} 辆</td>
+          <td>{{item.szLicense}}</td>
+          <td>{{item.fConfidence}}</td>
+          <td>
+            <span v-if="item.plateColor==0">黑色</span>
+            <span v-if="item.plateColor==20">绿色</span>
+            <span v-if="item.plateColor==30">蓝色</span>
+            <span v-if="item.plateColor==50">黄色</span>
+            <span v-if="item.plateColor==255">白色</span>
+          </td>
+          <td>{{item.bDoublePlates}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-md-6">
+      <div class="well">实时监控</div>
+      <p class="btn-list">
+        <button type="button" class="btn btn-primary" onclick="openAlprTcp()">打开监控</button>
+        <button type="button" class="btn btn-default" onclick="openCameras()">打开道闸</button>
+      </p>
+      <table id="table" class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>时间</th>
+          <th>识别耗时</th>
+          <th>车辆数</th>
+          <th>车牌号</th>
+          <th>可信度</th>
+          <th>车牌颜色</th>
+          <th>是否双层车牌</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, key) in licensePlate" v-on:click="showItem(item)" v-cloak>
+          <th scope="row">{{key+1}}</th>
+          <td>{{item.szTime}}</td>
+          <td>{{item.nProcessTime}}</td>
+          <td>{{item.nPlateNum}} 辆</td>
+          <td>{{item.szLicense}}</td>
+          <td>{{item.fConfidence}}</td>
+          <td>
+            <span v-if="item.plateColor==0">黑色</span>
+            <span v-if="item.plateColor==20">绿色</span>
+            <span v-if="item.plateColor==30">蓝色</span>
+            <span v-if="item.plateColor==50">黄色</span>
+            <span v-if="item.plateColor==255">白色</span>
+          </td>
+          <td>{{item.bDoublePlates}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <img :src="base64Img" data-src="holder.js/140x140" class="img-thumbnail" alt="140x140" data-holder-rendered="true" style="width: 100%; height: 340px;" onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjNlMjcxNTU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2M2UyNzE1NTlhIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0IiB5PSI3NC44Ij4xNDB4MTQwPC90ZXh0PjwvZz48L2c+PC9zdmc+'">
+      <p class="btn-list">
+        <button type="button" class="btn btn-default" onclick="whitelistBanner()">白名单</button>
+        <button type="button" class="btn btn-primary" onclick="blacklistBanner()">黑名单</button>
+        <button type="button" class="btn btn-warning">固定车</button>
+      </p>
+      <table id="table2" class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>名单类型</th>
+          <th>车牌名称</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, key) in listBanner" v-on:click="showItem(item)" v-cloak>
+          <th scope="row">{{key+1}}</th>
+          <td>
+            <span v-if="item.szType==0">白名单</span>
+            <span v-if="item.szType==1">黑名单</span>
+            <span v-if="item.szType==2">固定车</span>
+          </td>
+          <td>{{item.szLicense}}</td>
+          <td>{{item.szBeginTime}}</td>
+          <td>{{item.szEndTime}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/javascripts/jplayer/jquery.jplayer.min.js"></script>
+<script src="/javascripts/socket.io.js"></script>
+<script src="/vue/2.3.4/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+      el: '#app',
+      data: {
+          licensePlate: [],
+          listBanner:[],
+          base64Img: ''
+      },
+      methods: {
+          showDetails: function (item) {
+          }
+      },
+      filters:{
+          courseTime:function (startTime, endTime) {
+          }
+      },
+      watch: {
+          items: function () {
+          }
+      }
+  });
+  var domain = window.location.host; // 获取服务主机路径
+  var socket = io.connect(domain);
+
+  $(document).ready(function(){
+    $("#jquery_jplayer_1").jPlayer({
+      ready: function () {
+        $(this).jPlayer("setMedia", {
+          title: "Big Buck Bunny",
+          m4v: "/video/readStream", //视频文件 http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v
+          ogv: "/video/readStream", //视频文件 http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv
+          webmv: "/video/readStream", //视频文件 http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm
+          poster: "http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png" //视频初始时图片
+        });
+      },
+      swfPath: "/javascripts/jplayer",
+      supplied: "webmv, ogv, m4v",
+      size: {
+        width: "635px",
+        height: "360px",
+        cssClass: "jp-video-360p"
+      },
+      useStateClassSkin: true,
+      autoBlur: false,
+      smoothPlayBar: true,
+      keyEnabled: true,
+      remainingDuration: true,
+      toggleDuration: true
+    });
+  });
+  function openAlprTcp() {
+      socket.emit('openAlprTcp', {});
+  }
+  function openCameras() {
+    $.get('/dll/openCameras', function (data) {
+      console.log(data);
+    })
+  }
+  function getPlateList() {
+      $.get('/plate/getPlateList', function (data) {
+          console.log(data);
+      })
+  }
+  function whitelistBanner() { // 白名单
+      $.get('/plate/whitelistBanner', function (data) {
+          console.log(data);
+          if(data != null) {
+              vm.listBanner = data.list;
+          }
+      })
+  }
+  function blacklistBanner() { // 白名单
+      $.get('/plate/blacklistBanner', function (data) {
+          console.log(data);
+          if(data != null) {
+              vm.listBanner = data.list;
+          }
+      })
+  }
+  // 收到消息
+  socket.on('licensePlate', function (data) {
+      console.log('收到回复消息', data);
+      if(data != null) {
+          vm.licensePlate.push(data.result);
+      }
+  });
+  socket.on('licensePhoto', function (data) {
+      console.log('收到回复消息', data);
+      if(data != null) {
+         vm.base64Img = 'data:image/jpeg;base64,'+data.result.base64Image;
+      }
+  });
+</script>

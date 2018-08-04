@@ -1,0 +1,33 @@
+{
+  "appenders": [{
+    "type": "console"
+  },{
+    "type": "dateFile",
+    "filename": "./logs/access",
+    "pattern": ".yyyy-MM-dd.log",
+    "category": "http"
+  }, {
+    "type": "dateFile",
+    "filename": "./logs/stats",
+    "pattern": ".MM.dd.log",
+    "alwaysIncludePattern": true,
+    "category": "stats",
+    "level" : "INFO"
+  }, {
+    "type": "file",
+    "filename": "./logs/alprClien.log",
+    "maxLogSize": 2048000,
+    "numBackups": 10,
+    "level" : "DEBUG"
+  }, {
+    "type": "logLevelFilter",
+    "level": "WARN",
+    "appender": {
+      "type": "dateFile",
+      "filename": "./logs/errors",
+      "pattern": ".MM.dd.log",
+      "alwaysIncludePattern": true
+    }
+  }],
+  "replaceConsole": true
+}

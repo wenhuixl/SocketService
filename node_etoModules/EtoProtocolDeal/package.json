@@ -1,0 +1,9 @@
+{
+  "name": "eto-protocol-deal",
+  "version": "0.0.0",
+  "description": "EtoProtocolDeal",
+  "main": "app.js",
+  "author": {
+    "name": "Administrator"
+  }
+}

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8" />
+	<title>岗亭</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<!--  -->
+	<!--<link rel="shortcut icon" href="../assets/images/ilk/favicon.ico" />-->
+	<!-- bootstrap & fontawesome -->
+	<link rel="stylesheet" href="../assets/css/bootstrap.css" />
+	<link rel="stylesheet" href="../assets/css/jquery-ui.css" />
+
+	<link rel="stylesheet" href="../assets/css/font-awesome.css" />
+
+	<!-- text fonts -->
+	<link rel="stylesheet" href="../assets/css/ace-fonts.css" />
+
+	<!-- ace styles -->
+	<link rel="stylesheet" href="../assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+
+
+	<!-- ilkService styles -->
+	<link rel="stylesheet" href="../assets/css/ilk/ilk.css" />
+
+	<!--[if lte IE 9]>
+	<link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet" />
+	<![endif]-->
+
+	<!--[if lte IE 9]>
+	<link rel="stylesheet" href="../assets/css/ace-ie.css" />
+	<![endif]-->
+
+	<!-- ace settings handler -->
+	<script src="../assets/js/ace-extra.js"></script>
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+	<!--[if lte IE 8]>
+	<script src="../assets/js/html5shiv.js"></script>
+	<script src="../assets/js/respond.js"></script>
+	<![endif]-->
+
+	<!-- 样式异常 -->
+	<link rel="stylesheet" href="../assets/css/jquery.gritter.css"/>
+
+
+	<style type="text/css">
+		.ace-nav > li {
+			height: inherit;
+			border-left: 0px;
+		}
+		.menu-text{
+			width: 80px;
+		}
+		.dropdown-navbar.navbar-grey > li:hover {
+			background-color: #FEE188;
+		}
+	</style>
+</head>
+
+<!-- 侧边栏菜单 -->
+<script type="text/html" id="sideBarList">
+	菜单项1
+	<li>
+		<a data-roleid="" href="">
+			<i class="menu-icon fa fa-envelope"></i>
+			<span class="menu-text">菜单项1</span>
+		</a>
+	</li>
+	<li>
+		<a data-roleid="" href="">
+			<i class="menu-icon fa fa-envelope"></i>
+			<span class="menu-text">菜单项2</span>
+		</a>
+	</li>
+</script>
+
+<!-- 功能菜单 -->
+<script type="text/html" id="metro-list">
+	<div class="m-metro2">
+		<div class="metro-node">
+			<div class="mn-content"><div>功能菜单1</div></div>
+		</div>
+		<div class="nav metro-cnode">
+			<ul>
+				<li title="功能菜单1">
+					<a data-url="" href="">
+								<span class="mcn-content">
+									<i class="ht_icon KLP-iconfont"></i>
+									<div>功能菜单11</div>
+								</span>
+					</a>
+				</li>
+				<li title="功能菜单2">
+					<a data-url="" href="">
+								<span class="mcn-content">
+									<i class="ht_icon KLP-iconfont"></i>
+									<div>功能菜单21</div>
+								</span>
+					</a>
+				</li>
+				<li title="">
+					<a href="javascript:void(0);">
+								<span class="mcn-content">
+									<i class="mm-cnode-icons"></i>
+									<span></span>
+								</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</script>
+
+<script type="text/html" id="noticeList">
+
+	<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+		<i class="ace-icon fa fa-envelope icon-animated-bell"></i>
+		<span class="badge badge-important"></span>
+	</a>
+	<ul class="dropdown-menu-right dropdown-navbar navbar-grey dropdown-menu dropdown-caret dropdown-close">
+		<li>
+			<a href="">
+				<i class="btn btn-xs no-hover btn-black fa fa-comment"></i>
+				<span class="pull-right badge badge-info">2</span>
+			</a>
+		</li>
+	</ul>
+
+</script>
+
+<body class="no-skin">
+<!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-default ilk-bg-header">
+	<script type="text/javascript">
+        try { ace.settings.check('navbar' , 'fixed') } catch(e) {}
+	</script>
+
+	<div class="navbar-container" id="navbar-container">
+		<!-- #section:basics/sidebar.mobile.toggle -->
+		<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+			<span class="sr-only">切换侧边栏</span>
+
+			<span class="icon-bar"></span>
+
+			<span class="icon-bar"></span>
+
+			<span class="icon-bar"></span>
+		</button>
+
+		<!-- /section:basics/sidebar.mobile.toggle -->
+		<div class="navbar-header pull-left">
+			<!-- #section:basics/navbar.layout.brand -->
+			<a href="#" class="navbar-brand">
+				<small>
+					<img class="ilkLogo" alt="logo" id="custom-logo" src="../login/images/easyto_logo.png"/>
+					<span class="systemName">停车场管理系统</span>
+				</small>
+			</a>
+
+			<!-- /section:basics/navbar.layout.brand -->
+
+			<!-- #section:basics/navbar.toggle -->
+
+			<!-- /section:basics/navbar.toggle -->
+		</div>
+
+		<!-- #section:basics/navbar.dropdown -->
+		<div class="navbar-buttons navbar-header pull-right" role="navigation" style="margin-top: 10px;">
+			<ul class="nav ace-nav">
+
+				<li id="notice" class="light-blue">
+				</li>
+
+				<!-- #section:basics/navbar.user_menu -->
+				<li class="light-blue">
+					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+						<img class="nav-user-photo" id="sys-user-avatar" src="../assets/images/avatars/avatar2.png" alt="avatar" />
+						<span class="user-info">
+									<small>欢迎您</small>
+									<span id="currentUserName"></span>
+								</span>
+						<i class="ace-icon fa fa-caret-down"></i>
+					</a>
+
+					<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+						<li>
+                            <a href="/profile">
+                                <i class="ace-icon fa fa-user"></i>个人信息
+                            </a>
+                        </li>
+						<li class="divider"></li>
+						<li>
+							<a href="javascript:;" id="logout">
+								<i class="ace-icon fa fa-sign-out"></i>注销
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<!-- /section:basics/navbar.user_menu -->
+			</ul>
+		</div>
+
+		<!-- /section:basics/navbar.dropdown -->
+	</div><!-- /.navbar-container -->
+</div>
+
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+	<script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+	</script>
+	
+	<!-- #section:basics/sidebar -->
+	<div id="sidebar" class="sidebar responsive m-left-sidebar">
+		<script type="text/javascript">
+            try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+		</script>
+
+		<ul class="nav nav-list m-left-list" id="m-left-list">
+			<li class="active">
+				<a data-roleid="" href="/gt">
+					<i class="menu-icon fa fa-desktop"></i>
+					<span class="menu-text">岗亭</span>
+				</a>
+			</li>
+			<li>
+				<a data-roleid="" href="#">
+					<i class="menu-icon fa fa-video-camera"></i>
+					<span class="menu-text">监控</span>
+				</a>
+			</li>
+		</ul><!-- /.nav-list -->
+
+		<!-- #section:basics/sidebar.layout.minimize -->
+		<div class="sidebar-toggle sidebar-collapse m-left-sidebar-toggle" id="sidebar-collapse">
+			<i class="ace-icon fa fa-bars" data-icon1="ace-icon fa fa-bars" data-icon2="ace-icon fa fa-ellipsis-v"></i>
+		</div>
+
+		<!-- /section:basics/sidebar.layout.minimize -->
+		<script type="text/javascript">
+            try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+		</script>
+	</div>
+
+	<!-- /section:basics/sidebar -->
+	<div class="main-content">
+		<!-- #section:basics/content.breadcrumbs -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+			</script>
+
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a id="ilk_home" href="/gt">主页</a>
+				</li>
+			</ul><!-- /.breadcrumb -->
+		</div>
+
+		<!-- /section:basics/content.breadcrumbs -->
+		<div class="page-content">
+			<div class="page-content-area" data-ajax-content="false">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-7">
+							<!--<video width="100%" controls>
+								<source src="http://www.runoob.com/try/demo_source/mov_bbb.mp4" type="video/mp4">
+								<source src="http://www.runoob.com/try/demo_source/mov_bbb.ogg" type="video/ogg">
+								您的浏览器不支持 HTML5 video 标签。
+							</video>-->
+							<a id="openVideo" href="javascript:void(0)">
+								<img src="../assets/images/video.png" class="img-responsive" alt="易达号视频监控">
+							</a>
+						</div>
+						<div class="col-xs-3">
+							<div class="profile-user-info">
+								<div class="profile-info-row">
+									<div class="profile-info-name">
+										当前岗亭
+									</div>
+
+									<div class="profile-info-value">
+										<span id="currentGt">本机不是岗亭</span>
+									</div>
+								</div>
+
+								<div class="profile-info-row">
+									<div class="profile-info-name"> 上班时间 </div>
+
+									<div class="profile-info-value">
+										<span id="workShiftTime">本机不是岗亭</span>
+										<a href="javascript:void(0)" style="display:none;" id="changeShift"> 换班</a>
+										<!--<a href="javascript:void(0)" id="shoufei"> 测试</a>-->
+									</div>
+								</div>
+
+								<div class="profile-info-row">
+									<div class="profile-info-name"> 现金总额 </div>
+									<div class="profile-info-value">
+										<i class="middle ace-icon fa fa-cny bigger-120 red" style="display:none;"></i>
+										<span id="chargeAmounts">本机不是岗亭</span>
+									</div>
+								</div>
+							</div>
+
+							<hr>
+
+							<form class="form-horizontal">
+								<div class="tabbable">
+									<ul class="nav nav-tabs padding-16">
+										<li class="active" style="z-index:0;">
+											<a data-toggle="tab" href="#manualPass" aria-expanded="true">
+												<i class="green ace-icon fa fa-car bigger-125"></i>
+												人工放行/收费
+											</a>
+										</li>
+									</ul>
+									<div class="tab-content profile-edit-tab-content" style="z-index:0;">
+										<div id="manualPass" class="tab-pane active">
+											<form id="formManualPass">
+												<!-- <h4 class="header blue bolder smaller">General</h4> -->
+												<div class="space-8"></div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="parkCarProvinceForManualPass">车牌号码</label>
+													<div class="col-sm-9">
+														<span class="input-icon input-icon-right">
+															<select id="parkCarProvinceForManualPass" name="parkCarProvinceForManualPass"></select>
+															<input class="input-medium input-mask-phone"  style="width:151px;" type="text" id="plateForManualPass" name="plateForManualPass" maxlength="8">
+															<i class="ace-icon fa fa-car fa-flip-horizontal"></i>
+														</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="channelsForManualPass">放行通道</label>
+													<div class="col-sm-9">
+														<span class="input-icon input-icon-right">
+															<select id="channelsForManualPass" name="channelsForManualPass" style="width:200px;">
+															</select>
+														</span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="reasonForManualPass">放行理由</label>
+													<div class="col-sm-9">
+														<span class="input-icon input-icon-right">
+															<select id="reasonForManualPass" name="reasonForManualPass" style="width:200px;">
+															</select>
+														</span>
+													</div>
+												</div>
+												<div class="clearfix"><!--  form-actions -->
+													<div class="col-md-offset-2 col-md-8">
+														<button class="btn btn-info" style="display:none;" type="button" id="manualRecognize">
+															<i class="ace-icon fa fa-eye"></i>
+															识别
+														</button>
+														<button class="btn btn-info" style="display:none;" type="button" id="confirmManualPass">
+															<i class="ace-icon fa fa-check"></i>
+															确认
+														</button>
+														<button class="btn btn-default btn-block" style="display:none;" type="button" id="disableConfirmManualPass">
+															<i class="ace-icon fa fa-ban"></i>
+															本机不是岗亭
+														</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</form>
+							<div class="hr hr24 dotted"></div>
+							<div class="clearfix center">
+								<div class="grid2">
+									<span id="currentArea" class="bigger-175 blue">本机不是岗亭</span>
+									<br>
+									所属区域
+								</div>
+
+								<div class="grid2">
+									<span id="residualLotCount" class="bigger-175 blue">本机不是岗亭</span>
+									<br>
+									剩余车位
+								</div>
+							</div>
+
+							<div class="hr dotted"></div>
+						</div>
+						<div class="col-xs-2"></div>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!--  /.row  -->
+			</div><!-- /.page-content-area -->
+		</div><!-- /.page-content -->
+	</div><!-- /.main-content -->
+
+	<div class="footer" style="">
+		<div class="footer-inner">
+			<!-- #section:basics/footer -->
+			<div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue">易达号停车场管理系统 &copy; 2018 <span id="ilk-version"></span>
+						</span>
+			</div>
+			<!-- /section:basics/footer -->
+		</div>
+	</div>
+
+	<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+		<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+	</a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--换班弹出框/开始-->
+<div class="modal fade" id="shiftWorkModal" tabindex="-1" role="dialog" aria-labelledby="shiftWorkModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><i class="ace-icon fa fa-refresh"></i>&nbsp;换班确认</h4>
+			</div>
+			<div class="modal-body">
+				<form id="shiftWorkForm">
+				<div class="row">
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="workNumber">值班人员编号</label>
+							<input type="text" class="form-control" id="workNumber" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="pettyCash">备用金&nbsp;<span class="red">*</span></label>
+							<input type="number" class="form-control" id="pettyCash" name="pettyCash">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="userName">值班人员姓名</label>
+							<input type="text" class="form-control" id="userName" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="turnover">营业额</label>
+							<input type="text" class="form-control" id="turnover" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="startTime">上班时间</label>
+							<input type="text" class="form-control" id="startTime" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="amountsTotal">总金额</label>
+							<input type="text" class="form-control" id="amountsTotal" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="endTime">下班时间</label>
+							<input type="text" class="form-control" id="endTime" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="amountsActual">实际金额&nbsp;<span class="red">*</span></label>
+							<input type="number" class="form-control" id="amountsActual" name="amountsActual" maxlength="11" required="true">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="comments">备注</label>
+							<input type="text" class="form-control" id="comments">
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<span class="pull-left orange"><i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>&nbsp;操作员换班，将退出程序重新登录，请确认!</span>
+				<button type="button" class="btn btn-primary" id="confirmShift"><i class="ace-icon fa fa-check"></i>&nbsp;确认</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>&nbsp;取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--换班弹出框/结束-->
+
+<!--收费弹出框/开始-->
+<div class="modal fade" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel">
+	<div class="modal-dialog" style="width:800px" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><i class="ace-icon fa fa-credit-card"></i>&nbsp;人工收费</h4>
+			</div>
+			<div class="modal-body">
+				<form id="chargeForm">
+					<input type="hidden" id="chargeManualEnterPlate">
+					<input type="hidden" id="chargeAction">
+					<input type="hidden" id="chargeChannelId">
+					<input type="hidden" id="chargeBillCode">
+					<input type="hidden" id="chargeOrderState">
+					<input type="hidden" id="chargeStayTime">
+					<input type="hidden" id="chargeEnterRecordId">
+					<input type="hidden" id="chargePassReason">
+					<input type="hidden" id="chargeTmpInsertIds">
+					<input type="hidden" id="chargeEnterPlate">
+					<input type="hidden" id="chargeEventId">
+					<div class="row">
+						<div class="col-sm-5 col-md-5 col-lg-5">
+							<h5 class="header smaller lighter grey">
+								车辆计费信息
+							</h5>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargePlate">车牌号码</label>
+										<input class="form-control" type="text" id="chargePlate" name="chargePlate" maxlength="30" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeEnterTime">入场时间</label>
+										<input class="form-control" type="text"  id="chargeEnterTime" name="chargeEnterTime" maxlength="30" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeExitTime">出场时间<span id="chargeTotalStaytime"></span></label>
+										<input class="form-control" type="text" id="chargeExitTime" name="chargeExitTime" maxlength="30" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeAmountsReceivable">应收金额</label>
+										<input class="form-control red" type="number"  id="chargeAmountsReceivable" name="chargeAmountsReceivable" maxlength="20" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeCarType">车辆类型</label>
+										<select class="form-control" id="chargeCarType" name="chargeCarType">
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeAmountsReceived">实收金额<span class="red">*</span></label>
+										<input class="form-control red"  type="number" id="chargeAmountsReceived" name="chargeAmountsReceived" maxlength="20" required="true">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeTradeType">收费方式</label>
+										<select class="form-control" id="chargeTradeType" name="chargeTradeType">
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-7 col-md-7 col-lg-7">
+							<h5 class="header smaller lighter grey">
+								超时信息
+							</h5>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeLatestPaytime">最后支付时间</label>
+										<input class="form-control" type="text"  id="chargeLatestPaytime" name="chargeLatestPaytime"readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeOvertime">是否超时</label>
+										<input class="form-control" type="text"  id="chargeOvertime" name="chargeOvertime"readonly>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label no-padding-right" for="chargeOvertimeMinute">超时时长（分钟）</label>
+										<input class="form-control" type="text"  id="chargeOvertimeMinute" name="chargeOvertimeMinute"readonly>
+									</div>
+								</div>
+							</div>
+							<h5 class="header smaller lighter grey">
+								入场照片
+							</h5>
+							<img id="enterImg" src="../assets/images/ruchang.png" class="img-responsive" alt="易达号视频监控">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<!--<span class="pull-left orange"><i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>&nbsp;操作员换班，将退出程序重新登录，请确认!</span>-->
+				<button type="button" class="btn btn-primary" id="confirmManualCharge"><i class="ace-icon fa fa-check"></i>&nbsp;确认</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>&nbsp;取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--收费弹出框/结束-->
+
+<!--放行弹出框/开始-->
+<div class="modal fade" id="passConfirmModal" tabindex="-1" role="dialog" aria-labelledby="passConfirmModalLabel">
+	<div class="modal-dialog" style="width:400px" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><i class="ace-icon fa fa-refresh"></i>&nbsp;确认放行</h4>
+			</div>
+			<div class="modal-body">
+				<form id="passConfirmForm">
+					<input type="hidden" id="passConfirmAction">
+					<input type="hidden" id="passConfirmTmpInsertIds">
+					<input type="hidden" id="passConfirmChannelId">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<div class="form-group">
+								<label for="passConfirmPlate">车牌号码</label>
+								<input type="text" class="form-control" id="passConfirmPlate" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					<div class="col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="passConfirmCarType">车辆类型</label>
+							<select class="col-sm-12 col-md-12 col-lg-12" id="passConfirmCarType" name="passConfirmCarType">
+							</select>
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<span class="pull-left orange"><i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>&nbsp;请认真核对车牌号!</span>
+				<button type="button" class="btn btn-primary" id="passConfirm"><i class="ace-icon fa fa-check"></i>&nbsp;放行</button>
+				<!--<button type="button" class="btn btn-danger" id="passRefuse"><i class="ace-icon fa fa-ban"></i>&nbsp;拒绝</button>-->
+				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>&nbsp;取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--放行弹出框/结束-->
+
+<!--人工校正弹出框/开始-->
+<div class="modal fade" id="manualCorrectModal" tabindex="-1" role="dialog" aria-labelledby="manualCorrectModalLabel">
+	<div class="modal-dialog" style="width:600px" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><i class="ace-icon fa fa-refresh"></i>&nbsp;人工校正</h4>
+			</div>
+			<div class="modal-body">
+				<form id="manualCorrectForm">
+					<input type="hidden" id="manualCorrectOriginalPlate"/>
+					<input type="hidden" id="manualCorrectCarTypeId"/>
+					<input type="hidden" id="manualCorrectChannelId"/>
+					<input type="hidden" id="manualCorrectManualEnterPlate"/>
+					<input type="hidden" id="manualCorrectTmpInsertIds"/>
+					<input type="hidden" id="manualCorrectEventId"/>
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<div>
+								<label class="control-label no-padding-right" for="manualCorrectPlateShengSearch">车牌号码</label>
+								<span class="input-icon input-icon-right">
+									<select id="manualCorrectPlateShengSearch" name="manualCorrectPlateShengSearch"></select>
+									<input class="input-medium input-mask-phone"  style="width:151px;" type="text" id="manualCorrectPlateSearch" name="manualCorrectPlateSearch" maxlength="8">
+									<i class="ace-icon fa fa-car fa-flip-horizontal"></i>
+								</span>
+								<button type="button" id="manualCorrectSearch" class="btn btn-sm btn-primary">搜索</button>
+							</div>
+						</div>
+					</div>
+					<div class="row well well-sm">
+						<label class="col-sm-3 control-label no-padding-right">搜索记录总计:<span id="manualCorrectLastEnterListCount">2</span></label>
+						<div id="manualCorrectLastEnterInfo" class="col-sm-12 col-md-12 col-lg-12" style="display:none;">
+							<img id="manualCorrectEnterImg" class="img-responsive" src="../assets/images/ruchang.png"/>
+							<div class="space-2"></div>
+							<div class="col-sm-6 col-md-6 col-lg-6" style="border:1px;">
+								<div class="row">
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="manualCorrectLastEnterInfoPlate">车牌号码</label>
+										<div class="col-sm-7">
+										<span id="manualCorrectLastEnterInfoPlate" class="input-icon input-icon-right">
+											粤A12345
+										</span>
+											&nbsp;<!--<a href="#" id="manualCorrectSelectPlate">选择</a>-->
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="manualCorrectLastEnterInfoCarType">车辆类型</label>
+										<div class="col-sm-7">
+										<span id="manualCorrectLastEnterInfoCarType" class="input-icon input-icon-right">
+											临时车A
+										</span>
+											<input type="hidden" id="manualCorrectLastEnterInfoCarTypeId"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6 col-lg-6">
+								<div class="row">
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="manualCorrectLastEnterInfoChannel">入场地点</label>
+										<div class="col-sm-7">
+										<span id="manualCorrectLastEnterInfoChannel" class="input-icon input-icon-right">
+											通道1
+										</span>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="manualCorrectLastEnterInfoPassTime">入场时间</label>
+										<div class="col-sm-7">
+										<span id="manualCorrectLastEnterInfoPassTime" class="input-icon input-icon-right">
+											2018-07-03 10:38
+										</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="manualCorrectLastEnterInfoMessage" class="col-sm-12 col-md-12 col-lg-12" style="min-height: 300px">
+							<div class="center"><span class="text-warning orange">无匹配入场记录，请进行人工处理！</span></div>
+						</div>
+						<div id="manualCorrectLastEnterInfoPagingDiv" class="center" style="display:none;">
+							<ul id="manualCorrectLastEnterInfoPagingUl" class="pagination" style="padding:0px;margin-top: 5px;">
+							</ul>
+						</div>
+					</div>
+					<div class="space-2"></div>
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<label class="control-label no-padding-right" for="manualCorrectEnterPlateSheng">入场车牌号码</label>
+							<span class="input-icon input-icon-right">
+								<select id="manualCorrectEnterPlateSheng" name="manualCorrectEnterPlateSheng" disabled></select>
+								<input class="input-medium input-mask-phone"  style="width:151px;" type="text" id="manualCorrectEnterPlate" name="manualCorrectEnterPlate" maxlength="8" readonly>
+								<i class="ace-icon fa fa-car fa-flip-horizontal"></i>
+							</span>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<span class="pull-left orange"><i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>&nbsp;请认真核对车牌号!</span>
+				<button type="button" class="btn btn-default" id="manualCorrectConfirm" disabled><i class="ace-icon fa fa-check"></i>&nbsp;确认</button>
+				<button type="button" class="btn btn-primary" id="manualCorrectNoEnterRecordHandle"><i class="ace-icon fa fa-check"></i>&nbsp;无匹配处理</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--人工校正弹出框/结束-->
+
+<!--无匹配收费弹出框/开始-->
+<div class="modal fade alert" id="noEnterChargeModal" tabindex="-1" role="dialog" aria-labelledby="noEnterChargeModalLabel">
+	<div class="modal-dialog" style="width:300px" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><i class="ace-icon fa fa-refresh"></i>&nbsp;开闸收取费用</h4>
+			</div>
+			<div class="modal-body">
+				<form id="noEnterChargeForm">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<div class="form-group">
+								<label for="noEnterChargeAmountsReceived">金额<span class="red">*</span></label>
+								<input class="form-control" type="number"  id="noEnterChargeAmountsReceived" name="noEnterChargeAmountsReceived" maxlength="20" required="true">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12">
+							<div class="form-group">
+								<label for="noEnterChargeTradeType">收费方式</label>
+								<select class="form-control" id="noEnterChargeTradeType" name="noEnterChargeTradeType">
+								</select>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<span class="pull-left orange"><i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>&nbsp;请确认是否采用直接收费放行的模式!</span>
+				<button type="button" class="btn btn-primary" id="noEnterChargeConfirm"><i class="ace-icon fa fa-check"></i>&nbsp;确认</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="ace-icon fa fa-times"></i>&nbsp;取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--无匹配收费弹出框/结束-->
+
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../assets/js/jquery.js'>"+"<"+"/script>");
+    /* window.jQuery || document.write("<script src='http://guriddo.net/demo/js/jquery.min.js'>"+"<"+"/script>");  */
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+	window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+</script>
+
+<script src="/assets/js/jquery/jquery.min.js"></script>
+<script src="/assets/js/jquery.validate.js"></script>
+<script src="/assets/js/jquery/messages_zh.js"></script>
+<script src="/bootstrap/js/bootstrap.js"></script>
+<script src="/assets/js/jquery-ui.js"></script>
+
+<!-- ace scripts -->
+<script src="../assets/js/ace/elements.scroller.js"></script>
+<!--<script src="../assets/js/ace/elements.colorpicker.js"></script>
+<script src="../assets/js/ace/elements.fileinput.js"></script>
+<script src="../assets/js/ace/elements.typeahead.js"></script>
+<script src="../assets/js/ace/elements.wysiwyg.js"></script>
+<script src="../assets/js/ace/elements.spinner.js"></script>
+<script src="../assets/js/ace/elements.treeview.js"></script>
+<script src="../assets/js/ace/elements.wizard.js"></script>
+<script src="../assets/js/ace/elements.aside.js"></script>-->
+<script src="../assets/js/ace/ace.js"></script>
+<script src="../assets/js/ace/ace.ajax-content.js"></script>
+<!--<script src="../assets/js/ace/ace.touch-drag.js"></script>-->
+<script src="../assets/js/ace/ace.sidebar.js"></script>
+<script src="../assets/js/ace/ace.sidebar-scroll-1.js"></script>
+<!--<script src="../assets/js/ace/ace.submenu-hover.js"></script>
+<script src="../assets/js/ace/ace.widget-box.js"></script>
+<script src="../assets/js/ace/ace.settings.js"></script>
+<script src="../assets/js/ace/ace.settings-rtl.js"></script>
+<script src="../assets/js/ace/ace.settings-skin.js"></script>
+<script src="../assets/js/ace/ace.widget-on-reload.js"></script>
+<script src="../assets/js/ace/ace.searchbox-autocomplete.js"></script>
+<script src="../assets/js/template-native.js"></script>-->
+
+<!--<script src="../assets/js/jquery.gritter.js"></script>-->
+<script src="../assets/js/ilk/common.js"></script>
+<script src="../assets/js/ilk/utils.js"></script>
+<script src="../assets/js/bootbox.js"></script>
+<!--<script src="../assets/js/ilk/ajax.js"></script>-->
+
+<!-- inline scripts related to this page -->
+<script src="/assets/js/ilk/gt.js"></script>
+<script src="/assets/js/ilk/logout.js"></script>
+
+</body>
+</html>

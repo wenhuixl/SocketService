@@ -1,0 +1,326 @@
+
+<title>主页</title>
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+	<h1>
+		Dashboard
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			overview &amp; stats
+		</small>
+	</h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
+		<div class="row">
+			<div class="space-6"></div>
+
+			<div class="col-sm-7 infobox-container"></div>
+
+			<div class="vspace-12-sm"></div>
+
+			<div class="col-sm-5">
+				<div class="widget-box">
+					<div class="widget-header widget-header-flat widget-header-small">
+						<h5 class="widget-title">
+							<i class="ace-icon fa fa-signal"></i>
+							Traffic Sources
+						</h5>
+					</div>
+
+					<div class="widget-body">
+						<div class="widget-main">
+							<div id="container"></div>
+						</div><!-- /.widget-main -->
+					</div><!-- /.widget-body -->
+				</div><!-- /.widget-box -->
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+
+		<!-- #section:custom/extra.hr -->
+		<div class="hr hr32 hr-dotted"></div>
+
+
+		<!-- PAGE CONTENT ENDS -->
+	</div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+  <script src="../../assets/js/excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript">
+	var scripts = [null,
+	               "../public/assets/js/jquery-ui.custom.js",
+	               "../public/assets/js/jquery.ui.touch-punch.js",
+	               "../public/assets/js/jquery.easypiechart.js",
+	               "../public/assets/js/jquery.sparkline.js",
+	               "../public/assets/js/flot/jquery.flot.js",
+	               "../public/assets/js/flot/jquery.flot.pie.js",
+	               "../public/assets/js/flot/jquery.flot.resize.js",
+	               "../public/assets/js/highcharts/highcharts.js",
+	               "../public/assets/js/highcharts/exporting.js",
+	               "../public/assets/js/highcharts/drilldown.js",
+	               "https://img.hcharts.cn/highcharts/modules/data.js",
+	               null]
+	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+	  //inline scripts related to this page
+		 jQuery(function($) {
+		// Create the chart
+	    Highcharts.chart('container', {
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: '普通高等学校征兵量化考评'
+	        },
+	        subtitle: {
+	            text: '数据来源: 中山市军分区.'
+	        },
+	        xAxis: {
+	            type: 'category'
+	        },
+	        yAxis: {
+	            title: {
+	                text: '总的市场份额'
+	            }
+	        },
+	        legend: {
+	            enabled: false
+	        },
+	        plotOptions: {
+	            series: {
+	                borderWidth: 0,
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '{point.y:.1f}%'
+	                }
+	            }
+	        },
+	        tooltip: {
+	            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+	        },
+	        series: [{
+	            name: '浏览器品牌',
+	            colorByPoint: true,
+	            data: [{
+	                name: '电子科技大学中山学院',
+	                y: 56.33,
+	                drilldown: '电子科技大学中山学院'
+	            }, {
+	                name: '中山职业技术学院',
+	                y: 24.03,
+	                drilldown: '中山职业技术学院'
+	            }, {
+	                name: '中山火炬职业技术学院',
+	                y: 10.38,
+	                drilldown: '中山火炬职业技术学院'
+	            }, {
+	                name: 'A大学',
+	                y: 4.77,
+	                drilldown: 'A大学'
+	            }, {
+	                name: 'B大学',
+	                y: 0.91,
+	                drilldown: 'B大学'
+	            }, {
+	                name: 'C大学',
+	                y: 0.2,
+	                drilldown: null
+	            }]
+	        }],
+	        drilldown: {
+	            series: [{
+	                name: '电子科技大学中山学院',
+	                id: '电子科技大学中山学院',
+	                data: [
+	                    [
+	                        'v11.0',
+	                        24.13
+	                    ],
+	                    [
+	                        'v8.0',
+	                        17.2
+	                    ],
+	                    [
+	                        'v9.0',
+	                        8.11
+	                    ],
+	                    [
+	                        'v10.0',
+	                        5.33
+	                    ],
+	                    [
+	                        'v6.0',
+	                        1.06
+	                    ],
+	                    [
+	                        'v7.0',
+	                        0.5
+	                    ]
+	                ]
+	            }, {
+	                name: '中山职业技术学院',
+	                id: '中山职业技术学院',
+	                data: [
+	                    [
+	                        'v40.0',
+	                        5
+	                    ],
+	                    [
+	                        'v41.0',
+	                        4.32
+	                    ],
+	                    [
+	                        'v42.0',
+	                        3.68
+	                    ],
+	                    [
+	                        'v39.0',
+	                        2.96
+	                    ],
+	                    [
+	                        'v36.0',
+	                        2.53
+	                    ],
+	                    [
+	                        'v43.0',
+	                        1.45
+	                    ],
+	                    [
+	                        'v31.0',
+	                        1.24
+	                    ],
+	                    [
+	                        'v35.0',
+	                        0.85
+	                    ],
+	                    [
+	                        'v38.0',
+	                        0.6
+	                    ],
+	                    [
+	                        'v32.0',
+	                        0.55
+	                    ],
+	                    [
+	                        'v37.0',
+	                        0.38
+	                    ],
+	                    [
+	                        'v33.0',
+	                        0.19
+	                    ],
+	                    [
+	                        'v34.0',
+	                        0.14
+	                    ],
+	                    [
+	                        'v30.0',
+	                        0.14
+	                    ]
+	                ]
+	            }, {
+	                name: '中山火炬职业技术学院',
+	                id: '中山火炬职业技术学院',
+	                data: [
+	                    [
+	                        'v35',
+	                        2.76
+	                    ],
+	                    [
+	                        'v36',
+	                        2.32
+	                    ],
+	                    [
+	                        'v37',
+	                        2.31
+	                    ],
+	                    [
+	                        'v34',
+	                        1.27
+	                    ],
+	                    [
+	                        'v38',
+	                        1.02
+	                    ],
+	                    [
+	                        'v31',
+	                        0.33
+	                    ],
+	                    [
+	                        'v33',
+	                        0.22
+	                    ],
+	                    [
+	                        'v32',
+	                        0.15
+	                    ]
+	                ]
+	            }, {
+	                name: 'A大学',
+	                id: 'A大学',
+	                data: [
+	                    [
+	                        'v8.0',
+	                        2.56
+	                    ],
+	                    [
+	                        'v7.1',
+	                        0.77
+	                    ],
+	                    [
+	                        'v5.1',
+	                        0.42
+	                    ],
+	                    [
+	                        'v5.0',
+	                        0.3
+	                    ],
+	                    [
+	                        'v6.1',
+	                        0.29
+	                    ],
+	                    [
+	                        'v7.0',
+	                        0.26
+	                    ],
+	                    [
+	                        'v6.2',
+	                        0.17
+	                    ]
+	                ]
+	            }, {
+	                name: 'B大学',
+	                id: 'B大学',
+	                data: [
+	                    [
+	                        'v12.x',
+	                        0.34
+	                    ],
+	                    [
+	                        'v28',
+	                        0.24
+	                    ],
+	                    [
+	                        'v27',
+	                        0.17
+	                    ],
+	                    [
+	                        'v29',
+	                        0.16
+	                    ]
+	                ]
+	            }]
+	        }
+	    });
+	
+	})
+	
+	});
+</script>
